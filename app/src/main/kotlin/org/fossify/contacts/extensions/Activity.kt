@@ -70,7 +70,7 @@ fun SimpleActivity.showContactSourcePicker(currentSource: String, callback: (new
 
 fun BaseSimpleActivity.shareContacts(contacts: ArrayList<Contact>) {
     val filename = if (contacts.size == 1) {
-        "${contacts.first().getNameToDisplay()}.vcf"
+        "${contacts.first().getDisplayName()}.vcf"
     } else {
         DEFAULT_FILE_NAME
     }

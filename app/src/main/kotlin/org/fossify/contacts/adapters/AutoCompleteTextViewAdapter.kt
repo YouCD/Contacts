@@ -17,6 +17,7 @@ import org.fossify.commons.helpers.SimpleContactsHelper
 import org.fossify.commons.models.contacts.Contact
 import org.fossify.contacts.activities.SimpleActivity
 import org.fossify.contacts.databinding.ItemAutocompleteNameNumberBinding
+import org.fossify.contacts.extensions.getDisplayName
 
 class AutoCompleteTextViewAdapter(
     val activity: SimpleActivity,
@@ -28,7 +29,7 @@ class AutoCompleteTextViewAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val contact = resultList[position]
         var listItem = convertView
-        val nameToUse = contact.getNameToDisplay()
+        val nameToUse = contact.getDisplayName()
         if (listItem == null || listItem.tag != nameToUse.isNotEmpty()) {
             listItem = ItemAutocompleteNameNumberBinding.inflate(activity.layoutInflater, parent, false).root
         }
@@ -74,7 +75,7 @@ class AutoCompleteTextViewAdapter(
                 val searchString = constraint.toString().normalizeString()
                 val results = mutableListOf<Contact>()
                 contacts.forEach {
-                    if (it.getNameToDisplay().contains(searchString, true)) {
+                    if (it.getDisplayName().contains(searchString, true)) {
                         results.add(it)
                     }
                 }

@@ -2,6 +2,7 @@ package org.fossify.contacts.activities
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.graphics.drawable.ColorDrawable
@@ -55,6 +56,13 @@ class MainActivity : SimpleActivity(), RefreshContactsListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         appLaunched(BuildConfig.APPLICATION_ID)
+
+        val appFirstRunPrefs = getSharedPreferences("app_first_run", Context.MODE_PRIVATE)
+        if (!appFirstRunPrefs.getBoolean("first_run_completed", false)) {
+            config.startNameWithSurname = true
+            appFirstRunPrefs.edit().putBoolean("first_run_completed", true).apply()
+        }
+
         setupOptionsMenu()
         refreshMenuItems()
         setupEdgeToEdge(
@@ -175,7 +183,6 @@ class MainActivity : SimpleActivity(), RefreshContactsListener {
             findItem(R.id.dialpad).isVisible = !config.showDialpadButton
             findItem(R.id.change_view_type).isVisible = currentFragment == findViewById(R.id.favorites_fragment)
             findItem(R.id.column_count).isVisible = currentFragment == findViewById(R.id.favorites_fragment) && config.viewType == VIEW_TYPE_GRID
-            findItem(R.id.more_apps_from_us).isVisible = !resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)
         }
     }
 
@@ -199,7 +206,6 @@ class MainActivity : SimpleActivity(), RefreshContactsListener {
                 R.id.sort -> showSortingDialog(showCustomSorting = getCurrentFragment() is FavoritesFragment)
                 R.id.filter -> showFilterDialog()
                 R.id.dialpad -> launchDialpad()
-                R.id.more_apps_from_us -> launchMoreAppsFromUsIntent()
                 R.id.change_view_type -> changeViewType()
                 R.id.column_count -> changeColumnCount()
                 R.id.settings -> launchSettings()

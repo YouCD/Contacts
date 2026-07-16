@@ -324,7 +324,7 @@ class ViewContactActivity : ContactActivity() {
     }
 
     private fun setupNames() {
-        var displayName = contact!!.getNameToDisplay()
+        var displayName = contact!!.getDisplayName()
         if (contact!!.nickname.isNotEmpty()) {
             displayName += " (${contact!!.nickname})"
         }

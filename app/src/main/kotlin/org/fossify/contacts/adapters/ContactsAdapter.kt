@@ -42,6 +42,7 @@ import org.fossify.contacts.activities.ViewContactActivity
 import org.fossify.contacts.dialogs.CreateNewGroupDialog
 import org.fossify.contacts.extensions.config
 import org.fossify.contacts.extensions.editContact
+import org.fossify.contacts.extensions.getDisplayName
 import org.fossify.contacts.extensions.shareContacts
 import org.fossify.contacts.helpers.*
 import org.fossify.contacts.interfaces.RefreshContactsListener
@@ -200,7 +201,7 @@ class ContactsAdapter(
     private fun askConfirmDelete() {
         val itemsCnt = selectedKeys.size
         val items = if (itemsCnt == 1) {
-            "\"${getSelectedItems().first().getNameToDisplay()}\""
+            "\"${getSelectedItems().first().getDisplayName()}\""
         } else {
             resources.getQuantityString(org.fossify.commons.R.plurals.delete_contacts, itemsCnt, itemsCnt)
         }
@@ -327,7 +328,7 @@ class ContactsAdapter(
                 intent.flags = intent.flags or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
 
                 val shortcut = ShortcutInfo.Builder(activity, contact.hashCode().toString())
-                    .setShortLabel(contact.getNameToDisplay())
+                    .setShortLabel(contact.getDisplayName())
                     .setIcon(Icon.createWithBitmap(drawable.convertToBitmap()))
                     .setIntent(intent)
                     .build()
@@ -340,7 +341,7 @@ class ContactsAdapter(
     private fun getShortcutImage(contact: Contact, drawable: Drawable, callback: () -> Unit) {
         val appIconColor = baseConfig.appIconColor
         (drawable as LayerDrawable).findDrawableByLayerId(R.id.shortcut_contact_background).applyColorFilter(appIconColor)
-        val placeholderImage = BitmapDrawable(resources, SimpleContactsHelper(activity).getContactLetterIcon(contact.getNameToDisplay()))
+        val placeholderImage = BitmapDrawable(resources, SimpleContactsHelper(activity).getContactLetterIcon(contact.getDisplayName()))
         if (contact.photoUri.isEmpty() && contact.photo == null) {
             drawable.setDrawableByLayerId(R.id.shortcut_contact_image, placeholderImage)
             callback()
@@ -387,7 +388,7 @@ class ContactsAdapter(
         view.apply {
             setupViewBackground(activity)
             findViewById<ConstraintLayout>(org.fossify.commons.R.id.item_contact_frame)?.isSelected = selectedKeys.contains(contact.id)
-            val fullName = contact.getNameToDisplay()
+            val fullName = contact.getDisplayName()
             findViewById<TextView>(org.fossify.commons.R.id.item_contact_name).text = if (textToHighlight.isEmpty()) fullName else {
                 val normalizedFullName = fullName.normalizeString()
                 val normalizedSearchText = textToHighlight.normalizeString()

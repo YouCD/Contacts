@@ -20,6 +20,7 @@ import org.fossify.commons.models.PhoneNumber
 import org.fossify.commons.models.contacts.Address
 import org.fossify.commons.models.contacts.Contact
 import org.fossify.commons.models.contacts.Email
+import org.fossify.contacts.extensions.getDisplayName
 import org.fossify.commons.models.contacts.Event
 import org.fossify.commons.models.contacts.Group
 import org.fossify.commons.models.contacts.IM
@@ -270,7 +271,7 @@ class VcfImporter(val activity: SimpleActivity) {
 
                 // if there is no N and ORG fields at the given contact, only FN, treat it as an organization
                 if (
-                    contact.getNameToDisplay().isEmpty()
+                    contact.getDisplayName().isEmpty()
                     && contact.organization.isEmpty()
                     && ezContact.formattedName?.value?.isNotEmpty() == true
                 ) {
