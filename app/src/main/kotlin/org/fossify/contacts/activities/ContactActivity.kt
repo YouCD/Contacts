@@ -43,6 +43,7 @@ import org.fossify.commons.helpers.letterBackgroundColors
 import org.fossify.commons.models.RadioItem
 import org.fossify.commons.models.contacts.Contact
 import org.fossify.contacts.R
+import org.fossify.contacts.extensions.getDisplayName
 import org.fossify.contacts.extensions.shareContacts
 
 abstract class ContactActivity : SimpleActivity() {
@@ -83,7 +84,7 @@ abstract class ContactActivity : SimpleActivity() {
     abstract fun systemRingtoneSelected(uri: Uri?)
 
     fun showPhotoPlaceholder(photoView: ImageView) {
-        val placeholder = BitmapDrawable(resources, getBigLetterPlaceholder(contact?.getNameToDisplay() ?: "A"))
+        val placeholder = BitmapDrawable(resources, getBigLetterPlaceholder(contact?.getDisplayName() ?: "A"))
         photoView.setImageDrawable(placeholder)
         currentContactPhotoPath = ""
         contact?.photo = null

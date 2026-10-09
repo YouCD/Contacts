@@ -28,6 +28,7 @@ import org.fossify.contacts.adapters.GroupsAdapter
 import org.fossify.contacts.databinding.FragmentLayoutBinding
 import org.fossify.contacts.databinding.FragmentLettersLayoutBinding
 import org.fossify.contacts.extensions.config
+import org.fossify.contacts.extensions.getDisplayName
 import org.fossify.contacts.helpers.AVOID_CHANGING_TEXT_TAG
 import org.fossify.contacts.helpers.AVOID_CHANGING_VISIBILITY_TAG
 import org.fossify.contacts.helpers.Config
@@ -278,7 +279,7 @@ abstract class MyViewPagerFragment<Binding : MyViewPagerFragment.InnerBinding>(c
                 }
 
                 if (name.isEmpty()) {
-                    name = contact.getNameToDisplay()
+                    name = contact.getDisplayName()
                 }
 
                 val character = if (name.isNotEmpty()) name.substring(0, 1) else ""
@@ -313,7 +314,7 @@ abstract class MyViewPagerFragment<Binding : MyViewPagerFragment.InnerBinding>(c
         if (adapter is ContactsAdapter) {
             val shouldNormalize = fixedText.normalizeString() == fixedText
             val filtered = contactsIgnoringSearch.filter {
-                getProperText(it.getNameToDisplay(), shouldNormalize).contains(fixedText, true) ||
+                getProperText(it.getDisplayName(), shouldNormalize).contains(fixedText, true) ||
                     getProperText(it.nickname, shouldNormalize).contains(fixedText, true) ||
                     (fixedText.toLongOrNull() != null && it.phoneNumbers.any {
                         fixedText.normalizePhoneNumber().isNotEmpty() && it.normalizedNumber.contains(fixedText.normalizePhoneNumber(), true)
@@ -328,7 +329,7 @@ abstract class MyViewPagerFragment<Binding : MyViewPagerFragment.InnerBinding>(c
             } as ArrayList
 
             filtered.sortBy {
-                val nameToDisplay = it.getNameToDisplay()
+                val nameToDisplay = it.getDisplayName()
                 !getProperText(nameToDisplay, shouldNormalize).startsWith(fixedText, true) && !nameToDisplay.contains(fixedText, true)
             }
 

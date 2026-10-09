@@ -7,6 +7,7 @@ import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.models.contacts.Contact
 import org.fossify.contacts.activities.SimpleActivity
 import org.fossify.contacts.adapters.SelectContactsAdapter
+import org.fossify.contacts.extensions.getDisplayName
 import org.fossify.contacts.databinding.DialogSelectContactBinding
 import java.util.Locale
 
@@ -94,7 +95,7 @@ class SelectContactsDialog(
 
         binding.letterFastscroller.setupWithRecyclerView(binding.selectContactList, { position ->
             try {
-                val name = allContacts[position].getNameToDisplay()
+                val name = allContacts[position].getDisplayName()
                 val character = if (name.isNotEmpty()) name.substring(0, 1) else ""
                 FastScrollItemIndicator.Text(character.normalizeString().uppercase(Locale.getDefault()))
             } catch (e: Exception) {
